@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+evals/runs/
+dist/
+.env
+.env.*
+!.env.example
+/.response-archive/
+/.response-archive.json
+/responses/
+/.agents/skills/response-archive/
