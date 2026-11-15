@@ -30,7 +30,7 @@ try:
 except ImportError:
     from _vendor import tomli as tomllib
 
-VERSION = "0.1.1"
+VERSION = "0.1.0"
 SKILL = "response-archive"
 CONFIG = ".response-archive.json"
 STATE = ".response-archive"
