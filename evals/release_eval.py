@@ -13,12 +13,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    base = Path(tempfile.mkdtemp(prefix="response-archive-release-eval-", dir="/private/tmp" if sys.platform == "darwin" else None))
+    scratch = ROOT / ".tmp"
+    scratch.mkdir(exist_ok=True)
+    base = Path(tempfile.mkdtemp(prefix="response-archive-release-eval-", dir=scratch))
     source, workspace, home = base / "배포 with spaces", base / "작업 with spaces", base / "home"
     for path in [source, workspace, home]:
         path.mkdir()
     package = ROOT / "dist/response-archive-0.1.0.zip"
-    env = dict(os.environ, CODEX_HOME=str(home), PYTHONDONTWRITEBYTECODE="1")
+    env = dict(os.environ, CODEX_HOME=str(home), PYTHONDONTWRITEBYTECODE="1",
+               TMPDIR=str(scratch), TMP=str(scratch), TEMP=str(scratch))
     with zipfile.ZipFile(package) as z:
         assert not any("auth.json" in p or "/responses/" in p or "/runs/" in p for p in z.namelist())
         z.extractall(source)

@@ -164,7 +164,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-model", action="store_true", required=True, help="Opt in to real account/model use")
     args = parser.parse_args()
-    base = Path(tempfile.mkdtemp(prefix="response-archive-native-eval-", dir="/private/tmp"))
+    scratch = ROOT / ".tmp"
+    scratch.mkdir(exist_ok=True)
+    base = Path(tempfile.mkdtemp(prefix="response-archive-native-eval-", dir=scratch))
     workspace, home = base / "workspace", base / "home"
     for p in [workspace, home, base / "tmp", base / "cache", base / "xdg"]:
         p.mkdir()
