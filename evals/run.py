@@ -20,7 +20,10 @@ def main():
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output = ROOT / "evals/runs" / (stamp + "-" + args.label + "-" + uuid.uuid4().hex[:6])
     output.mkdir(parents=True)
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    scratch = ROOT / ".tmp"
+    scratch.mkdir(exist_ok=True)
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", TMPDIR=str(scratch),
+               TMP=str(scratch), TEMP=str(scratch))
     run = subprocess.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests", "-v"], cwd=ROOT, env=env, capture_output=True, text=True)
     (output / "tests.txt").write_text(run.stdout + run.stderr)
     source = ROOT / "skills/response-archive/scripts/archive.py"
