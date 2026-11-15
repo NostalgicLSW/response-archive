@@ -4,6 +4,7 @@ __pycache__/
 .DS_Store
 evals/runs/
 dist/
+/.tmp/
 .env
 .env.*
 !.env.example
