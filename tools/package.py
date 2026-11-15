@@ -9,7 +9,7 @@ from pathlib import Path
 from check_release import check, checked_path, content_findings
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "response-archive-0.1.0"
+PREFIX = "response-archive-0.1.1"
 
 
 def main():
