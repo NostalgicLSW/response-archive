@@ -201,11 +201,13 @@ class LifecycleAttack(Workspace):
 
 class PublicationAttack(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix="archive-publication-eval-", dir="/private/tmp" if sys.platform == "darwin" else None)
+        scratch = REPO / ".tmp"
+        scratch.mkdir(exist_ok=True)
+        self.tmp = tempfile.TemporaryDirectory(prefix="archive-publication-eval-", dir=scratch)
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name) / "source"
         def ignored(path, names):
-            return {n for n in names if n in {"dist", "__pycache__", ".git"} or (Path(path).name == "evals" and n == "runs")}
+            return {n for n in names if n in {"dist", "__pycache__", ".git", ".tmp"} or (Path(path).name == "evals" and n == "runs")}
         shutil.copytree(REPO, self.root, ignore=ignored)
 
     def build(self):
