@@ -20,7 +20,9 @@ import archive as a
 
 class Workspace(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix="response-archive-eval-", dir="/private/tmp" if sys.platform == "darwin" else None)
+        scratch = REPO / ".tmp"
+        scratch.mkdir(exist_ok=True)
+        self.tmp = tempfile.TemporaryDirectory(prefix="response-archive-eval-", dir=scratch)
         self.root = Path(self.tmp.name) / "프로젝트 with spaces"
         self.root.mkdir()
         self.home = Path(self.tmp.name) / "home"
@@ -250,7 +252,7 @@ class InstallAndSettings(Workspace):
     def test_native_disable_by_path(self):
         self.install()
         path = self.root / ".agents/skills/response-archive/SKILL.md"
-        (self.home / "config.toml").write_text('[[skills.config]]\npath=' + json.dumps(str(path)) + '\nenabled=false\n')
+        (self.home / "config.toml").write_text('[[skills.config]]\npath=' + json.dumps(str(path), ensure_ascii=False) + '\nenabled=false\n')
         self.assertFalse(a.status(self.root)["native_enabled"])
 
     def test_child_folder_does_not_inherit_root_config(self):
