@@ -217,7 +217,7 @@ class PublicationAttack(unittest.TestCase):
         (self.root / "docs/private.env").write_text("PRIVATE_CANARY=not-for-release")
         result = self.build()
         self.assertEqual(result.returncode, 0, result.stderr)
-        with zipfile.ZipFile(self.root / "dist/response-archive-0.1.0.zip") as z:
+        with zipfile.ZipFile(self.root / "dist/response-archive-0.1.1.zip") as z:
             self.assertFalse(any(n.endswith("private.env") for n in z.namelist()))
 
     def test_credential_pattern_in_public_source_blocks_build(self):
@@ -235,7 +235,7 @@ class PublicationAttack(unittest.TestCase):
     def test_failed_build_keeps_previous_zip_intact(self):
         result = self.build()
         self.assertEqual(result.returncode, 0, result.stderr)
-        package = self.root / "dist/response-archive-0.1.0.zip"
+        package = self.root / "dist/response-archive-0.1.1.zip"
         before = package.read_bytes()
         readme = self.root / "README.md"
         outside = self.root.parent / "outside-readme"
